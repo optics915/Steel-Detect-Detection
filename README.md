@@ -12,6 +12,7 @@
 binary1, contours1, hierarchy1 = cv2.findContours(thresh1, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)   
 4、可能出现的版本问题：numpy和Pillow这两个包版本太低，卸载安装靠近最新的版本  
 5、为自定义设计前端页面，可配置Qt Designer，课参考https://blog.csdn.net/weixin_42512684/article/details/104099351  
+6、或者你可以不安装anaconda，选择安装项目目录下的requirement.txt，安装命令pip install -r requirements.txt或者pip3 install -r requirements.txt  
 #### 注意点
 这个项目使用的摄像头是大恒水星系列的相机，需要在其官网下载对应的驱动，且同时运行两个相机，不然会报错，若使用一个，则需修改一下  
 若使用普通的免驱动的USB摄像头，可直接通过OpenCV接口调用  
