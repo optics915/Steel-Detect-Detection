@@ -5,13 +5,15 @@
 2、基于pyqt5设计了图形化界面实时反映钢管表面特征以及实时处理的画面；  
 3、综合传统的图像处理以及深度学习（基于yolov5）方法来识别缺陷并分类；  
 4、基于socket通信方式将采集到的缺陷上传至服务端用于数据分析处理（未完全实现）  
-#### 负责了  
-1、调研以及实验、选择能够尽可能减少反射光干扰的同轴光源；  
-2、基于pyqt5设计前端显示页面；  
-3、大部分核心算法的编写（识别主要缺陷类型以及分类）；  
-4、部分后端数据处理的学习和参与等事情。  
-#### 完成了  
-1、整体系统框架的初步搭建以及部分缺陷类型的识别等工作；
-#### 学到了  
-1、基于Python开发一套完整项目所涉及到的前期和后期所需考虑的知识；  
-2、培养了协作分工、有效沟通解决问题的能力
+#### 安装
+1、直接通过anaconda安装好常用的包，安装路径https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/ ，选择Anaconda3-5.2.0这个版本，自带python3.6.5版本；
+2、在pycharm中配置好python环境，课参考https://blog.csdn.net/qq_18424081/article/details/85856713 ；
+3、除此以外还需安装pyqt5以及opencv-python，其中opencv-python安装3.x版本，因为3.x版本的cv2.findContours这个接口返回的是3个参数，4.x的版本返回2个参数，否则会报错
+binary1, contours1, hierarchy1 = cv2.findContours(thresh1, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
+4、可能出现的版本问题：numpy和Pillow这两个包版本太低，卸载安装靠近最新的版本；
+5、为自定义设计前端页面，可配置Qt Designer，课参考https://blog.csdn.net/weixin_42512684/article/details/104099351
+#### 注意点
+这个项目使用的摄像头是大恒水星系列的相机，需要在其官网下载对应的驱动，且同时运行两个相机，不然会报错，若使用一个，则需修改一下
+若使用普通的免驱动的USB摄像头，可直接通过OpenCV接口调用
+#### 效果
+![](https://github.com/optics915/Steel-Detect-Detection/blob/master/test_result.png)
