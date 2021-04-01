@@ -6,7 +6,7 @@ import threading
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow
-# import icon_rc
+# import icon_rcQMainWindow
 import cv2
 from my_test import Ui_MainWindow
 import numpy as np
@@ -16,7 +16,6 @@ from PIL import ImageFont, ImageDraw, Image
 import time
 from operator import itemgetter
 import gxipy as gx
-
 
 class mainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -57,8 +56,12 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.C_pipe = 7
 
         # 初始化钢管宽度预设的参数
-        self.width_min = 105
+        self.width_min = 110
         self.width_max = 130
+
+        # 初始化钢管切口预设的参数
+        self.width_min_canny = 160
+        self.width_max_canny = 180
 
         # 初始化钢管边框参数
         self.x_left = 0
@@ -156,6 +159,13 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         # 缺口一定是在黑线存在的情况下才出现，定义一个标志位
         self.black_line = False
 
+        # 初始化canny算子的阈值
+        self.canny_thresh = 18
+
+        # 初始化getStructuringElement函数的核函数，决定了膨胀的程度
+        self.size_x = 3
+        self.size_y = 3
+
         # bool灯初始化为灰色
         # 钢管1
         self.label1_1.setPixmap(QPixmap('images/dark.png'))
@@ -163,15 +173,6 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.label1_3.setPixmap(QPixmap('images/dark.png'))
         self.label1_4.setPixmap(QPixmap('images/dark.png'))
         self.label1_5.setPixmap(QPixmap('images/dark.png'))
-        self.label1_6_1.setPixmap(QPixmap('images/dark.png'))
-        self.label1_6_2.setPixmap(QPixmap('images/dark.png'))
-        self.label1_7.setPixmap(QPixmap('images/dark.png'))
-        self.label1_8.setPixmap(QPixmap('images/dark.png'))
-        self.label1_9.setPixmap(QPixmap('images/dark.png'))
-        self.label1_10.setPixmap(QPixmap('images/dark.png'))
-        self.label1_11.setPixmap(QPixmap('images/dark.png'))
-        self.label1_12.setPixmap(QPixmap('images/dark.png'))
-        self.label1_13.setPixmap(QPixmap('images/dark.png'))
 
         # 钢管2
         self.label2_1.setPixmap(QPixmap('images/dark.png'))
@@ -179,31 +180,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.label2_3.setPixmap(QPixmap('images/dark.png'))
         self.label2_4.setPixmap(QPixmap('images/dark.png'))
         self.label2_5.setPixmap(QPixmap('images/dark.png'))
-        self.label2_6_1.setPixmap(QPixmap('images/dark.png'))
-        self.label2_6_2.setPixmap(QPixmap('images/dark.png'))
-        self.label2_7.setPixmap(QPixmap('images/dark.png'))
-        self.label2_8.setPixmap(QPixmap('images/dark.png'))
-        self.label2_9.setPixmap(QPixmap('images/dark.png'))
-        self.label2_10.setPixmap(QPixmap('images/dark.png'))
-        self.label2_11.setPixmap(QPixmap('images/dark.png'))
-        self.label2_12.setPixmap(QPixmap('images/dark.png'))
-        self.label2_13.setPixmap(QPixmap('images/dark.png'))
 
-        # 钢管3
-        self.label3_1.setPixmap(QPixmap('images/dark.png'))
-        self.label3_2.setPixmap(QPixmap('images/dark.png'))
-        self.label3_3.setPixmap(QPixmap('images/dark.png'))
-        self.label3_4.setPixmap(QPixmap('images/dark.png'))
-        self.label3_5.setPixmap(QPixmap('images/dark.png'))
-        self.label3_6_1.setPixmap(QPixmap('images/dark.png'))
-        self.label3_6_2.setPixmap(QPixmap('images/dark.png'))
-        self.label3_7.setPixmap(QPixmap('images/dark.png'))
-        self.label3_8.setPixmap(QPixmap('images/dark.png'))
-        self.label3_9.setPixmap(QPixmap('images/dark.png'))
-        self.label3_10.setPixmap(QPixmap('images/dark.png'))
-        self.label3_11.setPixmap(QPixmap('images/dark.png'))
-        self.label3_12.setPixmap(QPixmap('images/dark.png'))
-        self.label3_13.setPixmap(QPixmap('images/dark.png'))
 
     def slot_init(self):
         # 设置开启摄像头
@@ -225,10 +202,14 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.set_ksize_btn.clicked.connect(self.btn_set_ksize)
 
         # 自定义方法
-        self.timer_camera.timeout.connect(self.handle_threshold)
+        # self.timer_camera.timeout.connect(self.handle_threshold)
+        self.timer_camera.timeout.connect(self.main)
 
-        # 初始化排序列表
+        # 初始化表面缺陷排序列表
         self.list = []
+
+        # 初始化切口排序列表
+        self.list_canny = []
 
     def btn_orgin(self):
         if self.timer_camera.isActive() == False:  # 若定时器未启动
@@ -252,7 +233,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 self.CAM_NUM2.Height.set(self.Height_set2)
                 self.CAM_NUM1.stream_on()
                 self.CAM_NUM2.stream_on()
-
+            #
                 # 摄像头已打开
                 self.count_time = 1
                 self.timer_camera.start(30)  # 30毫秒读一帧
@@ -264,7 +245,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             self.CAM_NUM1.close_device()
             self.CAM_NUM2.close_device()
             # 清空界面显示区域
-            # self.image1_label.clear()
+            self.image1_label.clear()
             self.image_label.clear()
             self.pipe_label.clear()
             self.thresh_label.clear()
@@ -326,7 +307,268 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         img = np.array(img_pil)
         return img
 
-    def handle_threshold(self):
+    def beef(self):
+        if self.flag:
+            winsound.Beep(self.freq, self.duration)
+
+    # canny算子提取轮廓
+    def canny_demo(self, image):
+        canny_output = cv2.Canny(image, self.canny_thresh, self.canny_thresh * 2)
+        return canny_output
+
+    # 膨胀，让断裂的线段连接在一起，以便可以判断形状
+    def dilate_demo(self, image):
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (self.size_x, self.size_y))
+        canny_output = self.canny_demo(image)
+        dst = cv2.dilate(canny_output, kernel)
+        return dst
+
+    # 判断形状是否为方正，即判断侧边切口是否有变形，若变形，则为五边形，没变形，则为四边形
+    def judge_square(self, image):
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        r, b = cv2.threshold(image, 0, 255, cv2.THRESH_OTSU)
+        _, cr, t = cv2.findContours(b, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        ep = 0.01 * cv2.arcLength(cr[1], True)
+        ap = cv2.approxPolyDP(cr[1], ep, True)
+        co = len(ap)
+        if co == 4:
+            st = '矩形'
+        else:
+            st = '其他'
+        return co
+        # if co == 3:
+        #     st = '三角形'
+        # elif co == 4:
+        #     st = '矩形'
+        # elif co == 10:
+        #     st = '五角星'
+        # else:
+        #     st = '圆'
+
+    def getContours(self, img):
+        # 查找轮廓，cv2.RETR_ExTERNAL=获取外部轮廓点, CHAIN_APPROX_NONE = 得到所有的像素点
+        _, contours_canny, hierarchy_canny = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        # 循环轮廓，判断每一个形状
+        for cnt in contours_canny:
+
+            rect = cv2.minAreaRect(cnt)
+
+            self.middle_width = rect[1][0]
+            self.middle_height = rect[1][1]
+            # 让一定宽度范围的矩形作为候选图像加入判断
+            if self.middle_width < self.width_min_canny or self.middle_width > self.width_max_canny:
+                continue
+
+            print('self.middle_width', self.middle_width)
+            # print('rect[1][0]', rect[1][0])
+            # 计算所有轮廓的周长，便于做多边形拟合
+            peri = cv2.arcLength(cnt, True)
+            # 多边形拟合，获取每个形状的 边
+            approx = cv2.approxPolyDP(cnt, 0.02 * peri, True)
+            # print(len(approx))
+            objCor = len(approx)
+            # 获取每个形状的x，y，w，h
+            x, y, w, h = cv2.boundingRect(approx)
+
+            if objCor == 4:
+                objectType = 'Qualified'
+            else:
+                objectType = 'Unqualified'
+                self.label2_2.setPixmap(QPixmap('images/light.png'))
+
+            # 计算出边界后，即边数代表形状，如三角形边数=3
+            # if objCor == 3:
+            #     objectType = 'triangle'
+            #     # objectType = '三角形'
+            # elif objCor == 4:
+            #     objectType = 'rectangle'
+            #     # objectType = '方形'
+            # # 大于4个边的就是圆形
+            # elif objCor > 4:
+            #     objectType = "cicle"
+            #     # objectType = "圆"
+            # else:
+            #     objectType = "none"
+                # objectType = "没有"
+
+            # 绘制文本时需要绘制在图形附件,这个比较耗时
+            # cv2.rectangle(self.numpy_image1, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.putText(self.dilate_image, objectType,
+                        (x + (w // 2) - 10, y + (h // 2) - 10), cv2.FONT_HERSHEY_COMPLEX, 0.7,
+                        (255, 0, 0), 2)
+
+    def cv2ImgAddText(self, img, text, left, top, textColor=(0, 255, 0), textSize=20):
+        if (isinstance(img, np.ndarray)):  # 判断是否OpenCV图片类型
+            img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        # 创建一个可以在给定图像上绘图的对象
+        draw = ImageDraw.Draw(img)
+        # 字体的格式
+        fontStyle = ImageFont.truetype(
+            "./typefaces/simsun.ttc", textSize, encoding="utf-8")
+        # 绘制文本
+        draw.text((left, top), text, textColor, font=fontStyle)
+        # 转换回OpenCV格式
+        return cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
+
+    def BiServer1(self):
+        for i in range(1, 1000000000000):
+            print('i', i)
+
+    def BiServer2(self):
+        for j in range(1, 100000000000000):
+            print('j', j)
+
+    # 多线程处理两个for循环，模拟两个摄像头同时互不干扰工作
+    def main(self):
+        print('thread %s is running...' % threading.current_thread().name)
+        thread_list = []
+        # t1 = threading.Thread(target=self.BiServer1)
+        # t2 = threading.Thread(target=self.BiServer2)
+        t1 = threading.Thread(target=self.detect_pipe())
+        t2 = threading.Thread(target=self.detect_surface())
+        # print('111111111111')
+        thread_list.append(t1)
+        thread_list.append(t2)
+        for t in thread_list:
+            # t.setDaemon(True)
+            t.start()
+        # print('22222222222222222')
+        self.detect_pipe()
+        self.detect_surface()
+        # print('3333333')
+        # self.BiServer1()
+        # self.BiServer2()
+
+    def detect_pipe(self):
+        self.label1_2.setPixmap(QPixmap('images/dark.png'))
+        self.label2_2.setPixmap(QPixmap('images/dark.png'))
+        self.image2 = self.CAM_NUM2.data_stream[0].get_image()
+        # self.image2 = image1
+        # self.image2 = self.image1
+        numpy_image2 = self.image2.get_numpy_array()
+        self.numpy_image1 = numpy_image2.copy()
+        # display image with opencv
+        pimg2 = cv2.cvtColor(np.asarray(self.numpy_image1), cv2.COLOR_GRAY2BGR)
+        framePipe = cv2.flip(pimg2, -1)
+
+        # 缩放图片大小
+        imagePipe = cv2.cvtColor(framePipe, cv2.COLOR_BGR2RGB)
+        scale_percent_pipe = 50
+        imagePipe_width = int(imagePipe.shape[1] * scale_percent_pipe / 100)
+        imagePipe_height = int(imagePipe.shape[0] * scale_percent_pipe / 100)
+        imagePipe_dim = (imagePipe_width, imagePipe_height)
+        imagePipe = cv2.resize(imagePipe, imagePipe_dim, interpolation=cv2.INTER_AREA)
+        self.set_size(50, imagePipe)
+
+        canny_output = self.canny_demo(imagePipe)
+        self.dilate_image = self.dilate_demo(canny_output)
+
+        self.getContours(self.dilate_image)
+
+        cv2img = cv2.cvtColor(imagePipe, cv2.COLOR_BGR2RGB)  # cv2和PIL中颜色的hex码的储存顺序不同
+        pilimg = Image.fromarray(cv2img)
+        # PIL图片转cv2 图片
+        image1 = cv2.cvtColor(np.array(pilimg), cv2.COLOR_RGB2BGR)
+
+
+        # 钢管侧边管口原图
+        # showImage3 = QtGui.QImage(self.image2, self.image2.shape[1], self.image2.shape[0], self.image2.shape[1] * 3,
+        #                           QtGui.QImage.Format_RGB888)
+        showImage3 = QtGui.QImage(image1, image1.shape[1], image1.shape[0], image1.shape[1] * 3,
+                                  QtGui.QImage.Format_RGB888)
+        self.pip_orgin_label.setPixmap(QtGui.QPixmap.fromImage(showImage3))
+        # 钢管侧边管口阈值分割图
+        showImage4 = QtGui.QImage(self.dilate_image, self.dilate_image.shape[1], self.dilate_image.shape[0], self.dilate_image.shape[1],
+                                  QtGui.QImage.Format_Indexed8)
+        self.thresh_label.setPixmap(QtGui.QPixmap.fromImage(showImage4))
+
+        # GrayimgPipe = cv2.cvtColor(imagePipe, cv2.COLOR_BGR2GRAY)
+        # GrayimgPipe = cv2.GaussianBlur(GrayimgPipe, (self.ksize_w, self.ksize_h), 0)
+
+    # 侧边切口检测
+    # def detect_pipe(self):
+    #     self.list_canny = []
+    #     self.label1_2.setPixmap(QPixmap('images/dark.png'))
+    #     self.label2_2.setPixmap(QPixmap('images/dark.png'))
+    #     image2 = self.CAM_NUM2.data_stream[0].get_image()
+    #     numpy_image2 = image2.get_numpy_array()
+    #     # display image with opencv
+    #     pimg2 = cv2.cvtColor(np.asarray(numpy_image2), cv2.COLOR_GRAY2BGR)
+    #     framePipe = cv2.flip(pimg2, -1)
+    #
+    #     # 缩放图片大小
+    #     imagePipe = cv2.cvtColor(framePipe, cv2.COLOR_BGR2RGB)
+    #     scale_percent_pipe = 50
+    #     imagePipe_width = int(imagePipe.shape[1] * scale_percent_pipe / 100)
+    #     imagePipe_height = int(imagePipe.shape[0] * scale_percent_pipe / 100)
+    #     imagePipe_dim = (imagePipe_width, imagePipe_height)
+    #     imagePipe = cv2.resize(imagePipe, imagePipe_dim, interpolation=cv2.INTER_AREA)
+    #     self.set_size(50, imagePipe)
+    #
+    #     GrayimgPipe = cv2.cvtColor(imagePipe, cv2.COLOR_BGR2GRAY)
+    #     GrayimgPipe = cv2.GaussianBlur(GrayimgPipe, (self.ksize_w, self.ksize_h), 0)
+    #
+    #     # 使用canny算子,轮廓发现
+    #     canny = self.canny_demo(GrayimgPipe)
+    #     _, contours_canny, hierarchy_canny = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    #
+    #     # 由于canny算子会检测出特别多的轮廓，很耗时，所以需要将感兴趣的提取出来，即尺寸在某一范围的轮廓
+    #     for c in range(len(contours_canny)):
+    #         rect_canny = cv2.minAreaRect(contours_canny[c])
+    #         # 获取矩形四个顶点，浮点型
+    #         box_canny = cv2.boxPoints(rect_canny)
+    #
+    #         # 取整
+    #         box_canny = np.int0(box_canny)
+    #         # cv2.drawContours(image1, [box], 0, (0, 255, 0), 5)
+    #
+    #         self.theta_angle = rect_canny[2]
+    #
+    #         # 钢管边框的中心坐标
+    #         self.middle_width = rect_canny[1][1]
+    #         self.middle_height = rect_canny[1][0]
+    #         # print('(self.middle_width, self.middle_height)', (self.middle_width, self.middle_height))
+    #
+    #         # 钢管切口轮廓在这个范围内才被认为是候选切口
+    #         if rect_canny[1][1] < self.width_min_canny or rect_canny[1][1] > self.width_max_canny:
+    #             continue
+    #         self.list_canny.append(rect_canny)
+    #         # cv2.drawContours(image, [box_canny], 0, (0, 255, 0), 5)
+    #
+    #     self.list_canny = sorted(self.list_canny)
+    #     for i in range(len(self.list_canny)):
+    #         rect_canny_i = self.list[i]
+    #         # 钢管边框的中心坐标
+    #         self.middle_width_i = rect_canny_i[0][0]
+    #         self.middle_height_i = rect_canny_i[0][1]
+    #         # 获取矩形四个顶点，浮点型
+    #         box_i = cv2.boxPoints(rect_canny_i)
+    #         # # 取整
+    #         box_i = np.int0(box_i)
+    #         self.theta_angle = rect_canny_i[2]
+    #
+    #     # 这个标记颜色特别耗时
+    #     # for c in range(len(contours_canny)):
+    #     #     # 在原图上用红色线标记canny算子后的轮廓
+    #     #     cv2.drawContours(image2, contours_canny, c, (0, 0, 255), 2)
+    #
+    #     result = self.dilate_demo(image2)
+    #     # 自适应阈值
+    #     # threshPipe = cv2.adaptiveThreshold(GrayimgPipe, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,
+    #     #                                    self.blockSize_pipe, self.C_pipe)
+    #     # binary1, contoursPipe, hierarchyPipe = cv2.findContours(threshPipe, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
+    #
+    #     # 钢管侧边管口原图
+    #     showImage3 = QtGui.QImage(image2, image2.shape[1], image2.shape[0], image2.shape[1] * 3,
+    #                               QtGui.QImage.Format_RGB888)
+    #     self.pip_orgin_label.setPixmap(QtGui.QPixmap.fromImage(showImage3))
+    #     # 钢管侧边管口阈值分割图
+    #     showImage4 = QtGui.QImage(result, result.shape[1], result.shape[0], result.shape[1],
+    #                               QtGui.QImage.Format_Indexed8)
+    #     self.thresh_label.setPixmap(QtGui.QPixmap.fromImage(showImage4))
+
+    # 表面缺陷检测
+    def detect_surface(self):
         start = time.clock()  # 记下开始时刻
         # 初始化相关参数
         self.flag = False
@@ -338,64 +580,21 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         # bool灯初始化为灰色，因为每帧都要显示，效果为一闪一闪的
         # 钢管1
         self.label1_1.setPixmap(QPixmap('images/dark.png'))
-        self.label1_2.setPixmap(QPixmap('images/dark.png'))
         self.label1_3.setPixmap(QPixmap('images/dark.png'))
         self.label1_4.setPixmap(QPixmap('images/dark.png'))
         self.label1_5.setPixmap(QPixmap('images/dark.png'))
-        self.label1_6_1.setPixmap(QPixmap('images/dark.png'))
-        self.label1_6_2.setPixmap(QPixmap('images/dark.png'))
-        self.label1_7.setPixmap(QPixmap('images/dark.png'))
-        self.label1_8.setPixmap(QPixmap('images/dark.png'))
-        self.label1_9.setPixmap(QPixmap('images/dark.png'))
-        self.label1_10.setPixmap(QPixmap('images/dark.png'))
-        self.label1_11.setPixmap(QPixmap('images/dark.png'))
-        self.label1_12.setPixmap(QPixmap('images/dark.png'))
-        self.label1_13.setPixmap(QPixmap('images/dark.png'))
 
         # 钢管2
         self.label2_1.setPixmap(QPixmap('images/dark.png'))
-        self.label2_2.setPixmap(QPixmap('images/dark.png'))
         self.label2_3.setPixmap(QPixmap('images/dark.png'))
         self.label2_4.setPixmap(QPixmap('images/dark.png'))
         self.label2_5.setPixmap(QPixmap('images/dark.png'))
-        self.label2_6_1.setPixmap(QPixmap('images/dark.png'))
-        self.label2_6_2.setPixmap(QPixmap('images/dark.png'))
-        self.label2_7.setPixmap(QPixmap('images/dark.png'))
-        self.label2_8.setPixmap(QPixmap('images/dark.png'))
-        self.label2_9.setPixmap(QPixmap('images/dark.png'))
-        self.label2_10.setPixmap(QPixmap('images/dark.png'))
-        self.label2_11.setPixmap(QPixmap('images/dark.png'))
-        self.label2_12.setPixmap(QPixmap('images/dark.png'))
-        self.label2_13.setPixmap(QPixmap('images/dark.png'))
-
-        # 钢管3
-        self.label3_1.setPixmap(QPixmap('images/dark.png'))
-        self.label3_2.setPixmap(QPixmap('images/dark.png'))
-        self.label3_3.setPixmap(QPixmap('images/dark.png'))
-        self.label3_4.setPixmap(QPixmap('images/dark.png'))
-        self.label3_5.setPixmap(QPixmap('images/dark.png'))
-        self.label3_6_1.setPixmap(QPixmap('images/dark.png'))
-        self.label3_6_2.setPixmap(QPixmap('images/dark.png'))
-        self.label3_7.setPixmap(QPixmap('images/dark.png'))
-        self.label3_8.setPixmap(QPixmap('images/dark.png'))
-        self.label3_9.setPixmap(QPixmap('images/dark.png'))
-        self.label3_10.setPixmap(QPixmap('images/dark.png'))
-        self.label3_11.setPixmap(QPixmap('images/dark.png'))
-        self.label3_12.setPixmap(QPixmap('images/dark.png'))
-        self.label3_13.setPixmap(QPixmap('images/dark.png'))
 
         image1 = self.CAM_NUM1.data_stream[0].get_image()
         numpy_image1 = image1.get_numpy_array()
         # display image with opencv
         pimg1 = cv2.cvtColor(np.asarray(numpy_image1), cv2.COLOR_GRAY2BGR)
-
-        image2 = self.CAM_NUM2.data_stream[0].get_image()
-        numpy_image2 = image2.get_numpy_array()
-        # display image with opencv
-        pimg2 = cv2.cvtColor(np.asarray(numpy_image2), cv2.COLOR_GRAY2BGR)
-
         frameSurface = cv2.flip(pimg1, -1)
-        framePipe = cv2.flip(pimg2, -1)
 
         image = cv2.cvtColor(frameSurface, cv2.COLOR_BGR2RGB)
         # self.set_size(50, image)
@@ -405,36 +604,14 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         image_dim = (image_width, image_height)
         image = cv2.resize(image, image_dim, interpolation=cv2.INTER_AREA)
 
-        imagePipe = cv2.cvtColor(framePipe, cv2.COLOR_BGR2RGB)
-        scale_percent_pipe = 40
-        imagePipe_width = int(imagePipe.shape[1] * scale_percent_pipe / 100)
-        imagePipe_height = int(imagePipe.shape[0] * scale_percent_pipe / 100)
-        imagePipe_dim = (imagePipe_width, imagePipe_height)
-        imagePipe = cv2.resize(imagePipe, imagePipe_dim, interpolation=cv2.INTER_AREA)
-        # self.set_size(50, imagePipe)
-
         Grayimg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        GrayimgPipe = cv2.cvtColor(imagePipe, cv2.COLOR_BGR2GRAY)
-
         Grayimg = cv2.GaussianBlur(Grayimg, (self.ksize_w, self.ksize_h), 0)
-        GrayimgPipe = cv2.GaussianBlur(GrayimgPipe, (self.ksize_w, self.ksize_h), 0)
+
 
         thresh = cv2.adaptiveThreshold(Grayimg, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, self.blockSize_surface, self.C_surface)
-        binary, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
-        scale_percent_thresh = 60
-        widthThreash = int(image.shape[1] * scale_percent_thresh / 100)
-        heightThreash = int(image.shape[0] * scale_percent_thresh / 100)
-        dim_threash = (widthThreash, heightThreash)
-        thresh = cv2.resize(thresh, dim_threash, interpolation=cv2.INTER_AREA)
-
-        threshPipe = cv2.adaptiveThreshold(GrayimgPipe, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, self.blockSize_pipe, self.C_pipe)
-        binaryPipe, contoursPipe, hierarchyPipe = cv2.findContours(threshPipe, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
-        # scale_percent_pipe_thresh = 40
-        # width_pipe_threash = int(threshPipe.shape[1] * scale_percent_pipe_thresh / 100)
-        # height_pipe_threash = int(threshPipe.shape[0] * scale_percent_pipe_thresh / 100)
-        # dim_pipe_threash = (width_pipe_threash, height_pipe_threash)
-        # threshPipe = cv2.resize(threshPipe, dim_pipe_threash, interpolation=cv2.INTER_AREA)
-
+        # 老版本opencv-python返回三个参数，新版本返回两个参数，不然会报错ValueError: not enough values to unpack (expected 3, got 2)
+        # binary, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
+        binary1, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
         # 获取自适应阈值
         ret1, thresh2 = cv2.threshold(Grayimg, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         # 这里先设置自适应阈值
@@ -447,13 +624,6 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             # 特征提取框的特征
             # https://blog.csdn.net/qq_37385726/article/details/82313558
             rect1 = cv2.minAreaRect(contours1[c1])
-
-            # # 钢管边框的中心坐标
-            # self.middle_width = rect1[0][0]
-            # self.middle_height = rect1[0][1]
-
-            # print('(self.middle_width, self.middle_height)', (self.middle_width, self.middle_height))
-            # cx, cy = rect[0]  #中心位置
             # 获取矩形四个顶点，浮点型
             box1 = cv2.boxPoints(rect1)
 
@@ -475,7 +645,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 if rect1[1][0] < self.width_min or rect1[1][0] > self.width_max:
                     continue
                 self.list.append(rect1)
-                cv2.drawContours(image, [box1], 0, (0, 255, 0), 5)
+                cv2.drawContours(image, [box1], 0, (0, 255, 0), 3)
 
             # 往右上偏
             if -89.9999 < self.theta_angle < -45.0:
@@ -488,7 +658,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 if rect1[1][1] < self.width_min or rect1[1][1] > self.width_max:
                     continue
                 self.list.append(rect1)
-                cv2.drawContours(image, [box1], 0, (0, 255, 0), 5)
+                cv2.drawContours(image, [box1], 0, (0, 255, 0), 3)
 
             if self.theta_angle == -90.0 or self.theta_angle == 0.0:
                 # 钢管边框的中心坐标
@@ -501,7 +671,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 if rect1[1][1] < self.width_min or rect1[1][1] > self.width_max:
                     continue
                 self.list.append(rect1)
-                cv2.drawContours(image, [box1], 0, (0, 255, 0), 5)
+                cv2.drawContours(image, [box1], 0, (0, 255, 0), 3)
 
         if self.theta_angle == -90.0 or self.theta_angle == 0.0:
             self.list = sorted(self.list)
@@ -522,7 +692,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 self.textEdit_edit_angle.setText(str2)
                 # 在UI界面显示钢管宽度,往右上偏时宽度为rect[1][1]
                 str3 = str(self.total_length)
-                self.textEdit_edit_width.setText(str3)
+                # self.textEdit_edit_width.setText(str3)
 
                 (self.x_left_lower, self.y_left_lower) = (box_i[1][0], box_i[1][1])
                 (self.x_left_upper, self.y_left_upper) = (box_i[2][0], box_i[2][1])
@@ -563,11 +733,11 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                     # print('self.min_length', self.min_length)
                     rate = self.min_length / self.total_length
                     # print('rate', rate)
-                    print('(self.x_defect_width, self.x_defect_height)', (self.x_defect_width, self.x_defect_height))
+                    # print('(self.x_defect_width, self.x_defect_height)', (self.x_defect_width, self.x_defect_height))
 
                     # 黑线特征提取
                     if 0.09 < rate < 0.14 and 0 < self.x_defect_width < 19:  # 增加这个条件self.x_defect_width < 10是与缺口分开
-                        cv2.drawContours(image, [box], 0, (0, 0, 205), 5)  # 这个位置是RGB
+                        cv2.drawContours(image, [box], 0, (0, 0, 205), 2)  # 这个位置是RGB
                         self.count_nums = self.count_nums + 1
                         self.rate1 = rate
 
@@ -591,6 +761,12 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                             # 考虑一下多线程，让另一个线程来处理发出声音
                             self.flag = True
 
+                            # 分别显示第几根钢管的bool灯状态
+                            if i == 0:
+                                self.label1_3.setPixmap(QPixmap('images/light.png'))
+                            if i == 1:
+                                self.label2_3.setPixmap(QPixmap('images/light.png'))
+
                             # 多线程调用另一个函数，这样就不会出现因为另一个函数执行时间而卡顿
                             r = threading.Thread(target=self.beef)
                             r.setDaemon(False)
@@ -603,7 +779,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                     if 0.05 < rate < 0.11:
                         # print('(self.x_defect_width, self.x_defect_height)', (self.x_defect_width, self.x_defect_height))
                         if 25 < self.x_defect_height < 40:
-                            cv2.drawContours(image, [box], 0, (238, 44, 44), 5)  # 这个位置是RGB
+                            cv2.drawContours(image, [box], 0, (238, 44, 44), 1)  # 这个位置是RGB
                             cv2img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # cv2和PIL中颜色的hex码的储存顺序不同
                             pilimg = Image.fromarray(cv2img)
                             # PIL图片上打印汉字y
@@ -617,6 +793,12 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                                       font=font)  # 参数1：打印坐标，参数2：文本，参数3：字体颜色，参数4：字体
                             # PIL图片转cv2 图片
                             image = cv2.cvtColor(np.array(pilimg), cv2.COLOR_RGB2BGR)
+
+                            # 分别显示第几根钢管的bool灯状态
+                            if i == 0:
+                                self.label1_4.setPixmap(QPixmap('images/light.png'))
+                            if i == 1:
+                                self.label2_4.setPixmap(QPixmap('images/light.png'))
 
         if -45.0 <= self.theta_angle < -0.0001:
             self.list = sorted(self.list)
@@ -635,7 +817,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 self.textEdit_edit_angle.setText(str2)
                 # 在UI界面显示钢管宽度,往右上偏时宽度为rect[1][1]
                 str3 = str(self.total_length)
-                self.textEdit_edit_width.setText(str3)
+                # self.textEdit_edit_width.setText(str3)
 
                 (self.x_left_lower, self.y_left_lower) = (box1[0][0], box1[0][1])
                 (self.x_left_upper, self.y_left_upper) = (box1[1][0], box1[1][1])
@@ -702,14 +884,16 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                     rate = self.min_length / self.total_length
 
                     # 黑线特征提取
-                    if 0.08 < rate < 0.12 and 0 < self.x_defect_width < 8:  # 增加这个条件self.x_defect_width < 10是与缺口分开
-                        cv2.drawContours(image, [box], 0, (0, 0, 205), 5)  # 这个位置是RGB
-                        self.count_nums = self.count_nums + 1
-                        self.rate1 = rate
-
+                    # if 0.08 < rate < 0.12 and 0 < self.x_defect_width < 8:  # 增加这个条件self.x_defect_width < 10是与缺口分开
+                        # cv2.drawContours(image, [box], 0, (0, 0, 205), 5)  # 这个位置是RGB
+                        # self.count_nums = self.count_nums + 1
+                        # self.rate1 = rate
+                    if 0.08 < rate < 0.12:
                         # self.count_nums > 9是针对不连续的黑线，60 < self.x_defect_height < 200是针对连续的长条形黑线
-                        if self.count_nums > 9 or 60 < self.x_defect_height < 200:
-
+                        # if self.count_nums > 9 or 60 < self.x_defect_height < 200:
+                        if 2 < self.x_defect_width < 8 and 40 < self.x_defect_height < 200:
+                            self.black_line = True
+                            # cv2.drawContours(image, [box], 0, (255, 0, 0), 2)
                             cv2img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # cv2和PIL中颜色的hex码的储存顺序不同
                             pilimg = Image.fromarray(cv2img)
 
@@ -725,6 +909,12 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                             # 考虑一下多线程，让另一个线程来处理发出声音
                             self.flag = True
 
+                            # 分别显示第几根钢管的bool灯状态
+                            if i == 0:
+                                self.label1_3.setPixmap(QPixmap('images/light.png'))
+                            if i == 1:
+                                self.label2_3.setPixmap(QPixmap('images/light.png'))
+
                             # 多线程调用另一个函数，这样就不会出现因为另一个函数执行时间而卡顿
                             r = threading.Thread(target=self.beef)
                             r.setDaemon(False)
@@ -734,23 +924,30 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                             break
 
                     # 缺口特征提取
-                    if 0.06 < rate < 0.14 and self.x_defect_width > 6:
+                    #     if 0.06 < rate < 0.14 and self.x_defect_width > 6:
+                    if self.black_line:
+                        if 0.08 < rate < 0.11 and self.x_defect_width > 6:
+                            if self.x_defect_width < 40 and 20 < self.x_defect_height < 80:
+                                cv2.drawContours(image, [box], 0, (238, 44, 44), 1)  # 这个位置是RGB
+                                cv2img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # cv2和PIL中颜色的hex码的储存顺序不同
+                                pilimg = Image.fromarray(cv2img)
+                                # PIL图片上打印汉字y
+                                draw = ImageDraw.Draw(pilimg)  # 图片上打印
+                                font = ImageFont.truetype("typefaces/simsun.ttf", 40, encoding="utf-8")  # 参数1：字体文件路径，参数2：字体大小
+                                # draw.text((int(self.middle_width_i), int(self.x_defect_height)), "缺口", (44, 44, 238),
+                                #           # 这个位置是BGR
+                                #           font=font)  # 参数1：打印坐标，参数2：文本，参数3：字体颜色，参数4：字体
+                                draw.text((int(self.middle_width_i), int(self.y_defect)), "缺口", (44, 44, 238),
+                                          # 这个位置是BGR
+                                          font=font)  # 参数1：打印坐标，参数2：文本，参数3：字体颜色，参数4：字体
+                                # PIL图片转cv2 图片
+                                image = cv2.cvtColor(np.array(pilimg), cv2.COLOR_RGB2BGR)
 
-                        if self.x_defect_width < 40 and 20 < self.x_defect_height < 40:
-                            cv2.drawContours(image, [box], 0, (238, 44, 44), 5)  # 这个位置是RGB
-                            cv2img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # cv2和PIL中颜色的hex码的储存顺序不同
-                            pilimg = Image.fromarray(cv2img)
-                            # PIL图片上打印汉字y
-                            draw = ImageDraw.Draw(pilimg)  # 图片上打印
-                            font = ImageFont.truetype("typefaces/simsun.ttf", 40, encoding="utf-8")  # 参数1：字体文件路径，参数2：字体大小
-                            # draw.text((int(self.middle_width_i), int(self.x_defect_height)), "缺口", (44, 44, 238),
-                            #           # 这个位置是BGR
-                            #           font=font)  # 参数1：打印坐标，参数2：文本，参数3：字体颜色，参数4：字体
-                            draw.text((int(self.middle_width_i), int(self.y_defect)), "缺口", (44, 44, 238),
-                                      # 这个位置是BGR
-                                      font=font)  # 参数1：打印坐标，参数2：文本，参数3：字体颜色，参数4：字体
-                            # PIL图片转cv2 图片
-                            image = cv2.cvtColor(np.array(pilimg), cv2.COLOR_RGB2BGR)
+                                # 分别显示第几根钢管的bool灯状态
+                                if i == 0:
+                                    self.label1_4.setPixmap(QPixmap('images/light.png'))
+                                if i == 1:
+                                    self.label2_4.setPixmap(QPixmap('images/light.png'))
 
         if -89.9999 < self.theta_angle < -45.0:
             # 参考： https://blog.csdn.net/u013378642/article/details/81775131
@@ -759,32 +956,15 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             # 参考：https://www.jb51.net/article/153239.htm
             self.list = sorted(self.list)
 
-            # 参考：二维数组按指定行、列排序   https://blog.csdn.net/sinat_35821976/article/details/90518031
-            # self.list = np.array(self.list, dtype=float)
-            # # print('type', type(self.list))
-            # self.list = self.list.astype(np.float)
-            # self.list = self.list[np.argsort(self.list[:, 0])]
-
-            # self.list = float(self.list)
-            # print('self.list', self.list)
             for i in range(len(self.list)):
-                # print('self.list1', self.list)
-                # print('type(self.list)', type(self.list))
                 rect_i = self.list[i]
-                # print('rect_1', rect_i)
-                # print('rect_i', rect_i)
-                # print('rect_i[0][0]', rect_i[0][0])
                 # 钢管边框的中心坐标
                 self.middle_width_i = rect_i[0][0]
                 self.middle_height_i = rect_i[0][1]
-                # print('(self.middle_width, self.middle_height)', (self.middle_width, self.middle_height))
-                # cx, cy = rect[0]  #中心位置
                 # 获取矩形四个顶点，浮点型
                 box_i = cv2.boxPoints(rect_i)
                 # # 取整
                 box_i = np.int0(box_i)
-                # print('box_i', box_i)
-                # # cv2.drawContours(image1, [box], 0, (0, 255, 0), 5)
                 self.theta_angle = rect_i[2]
             #
                 self.total_length = rect_i[1][1]
@@ -793,14 +973,14 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 self.textEdit_edit_angle.setText(str2)
                 # 在UI界面显示钢管宽度,往右上偏时宽度为rect[1][1]
                 str3 = str(self.total_length)
-                self.textEdit_edit_width.setText(str3)
+                # self.textEdit_edit_width.setText(str3)
 
                 if i == 0:
-                    self.textEdit_edit_width1.setText(str3)
+                    self.textEdit_edit_width_1.setText(str3)
                 if i == 1:
-                    self.textEdit_edit_width2.setText(str3)
-                if i == 2:
-                    self.textEdit_edit_width3.setText(str3)
+                    self.textEdit_edit_width_2.setText(str3)
+                # if i == 2:
+                #     self.textEdit_edit_width_3.setText(str3)
 
                 (self.x_left_lower, self.y_left_lower) = (box_i[1][0], box_i[1][1])
                 (self.x_left_upper, self.y_left_upper) = (box_i[2][0], box_i[2][1])
@@ -870,14 +1050,14 @@ class mainWindow(QMainWindow, Ui_MainWindow):
 
                     # 黑线特征提取
                     if 0.08 < rate < 0.12:  # 增加这个条件self.x_defect_width < 10是与缺口分开
-                        if 2 < self.x_defect_width < 8 and 40 < self.x_defect_height < 200:
+                        if 2 < self.x_defect_width < 6 and 40 < self.x_defect_height < 200:
                             self.black_line = True
                             # self.count_nums = self.count_nums + 1
                             # self.rate1 = rate
                             #
                             # # self.count_nums > 9是针对不连续的黑线，60 < self.x_defect_height < 200是针对连续的长条形黑线
                             # if self.count_nums > 9 or 60 < self.x_defect_height < 200:
-                            cv2.drawContours(image, [box], 0, (0, 0, 205), 5)  # 这个位置是RGB
+                            cv2.drawContours(image, [box], 0, (0, 0, 205), 2)  # 这个位置是RGB
                             cv2img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # cv2和PIL中颜色的hex码的储存顺序不同
                             pilimg = Image.fromarray(cv2img)
 
@@ -895,11 +1075,9 @@ class mainWindow(QMainWindow, Ui_MainWindow):
 
                             # 分别显示第几根钢管的bool灯状态
                             if i == 0:
-                                self.label1_6_1.setPixmap(QPixmap('images/light.png'))
+                                self.label1_3.setPixmap(QPixmap('images/light.png'))
                             if i == 1:
-                                self.label2_6_1.setPixmap(QPixmap('images/light.png'))
-                            if i == 2:
-                                self.label3_6_1.setPixmap(QPixmap('images/light.png'))
+                                self.label2_3.setPixmap(QPixmap('images/light.png'))
 
                             # 多线程调用另一个函数，这样就不会出现因为另一个函数执行时间而卡顿
                             r = threading.Thread(target=self.beef)
@@ -911,9 +1089,10 @@ class mainWindow(QMainWindow, Ui_MainWindow):
 
                     # 缺口特征提取(如果有缺口，那么一定有黑线，反之不成立)
                         if self.black_line:
-                            if 0.08 < rate < 0.11 and self.x_defect_width > 6:
+                            if 0.08 < rate < 0.11 and self.x_defect_width > 8:
                                 if self.x_defect_width < 40 and 20 < self.x_defect_height < 80:
-                                    cv2.drawContours(image, [box], 0, (238, 44, 44), 5)  # 这个位置是RGB
+                                    print('缺口')
+                                    cv2.drawContours(image, [box], 0, (238, 44, 44), 1)  # 这个位置是RGB
                                     cv2img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # cv2和PIL中颜色的hex码的储存顺序不同
                                     pilimg = Image.fromarray(cv2img)
                                     # PIL图片上打印汉字y
@@ -930,11 +1109,9 @@ class mainWindow(QMainWindow, Ui_MainWindow):
 
                                     # 分别显示第几根钢管的bool灯状态
                                     if i == 0:
-                                        self.label1_6_2.setPixmap(QPixmap('images/light.png'))
+                                        self.label1_4.setPixmap(QPixmap('images/light.png'))
                                     if i == 1:
-                                        self.label2_6_2.setPixmap(QPixmap('images/light.png'))
-                                    if i == 2:
-                                        self.label3_6_2.setPixmap(QPixmap('images/light.png'))
+                                        self.label2_4.setPixmap(QPixmap('images/light.png'))
        # self.flag = True
        #  time.sleep(0.5)
         end = time.clock()  # 记下结束时刻
@@ -949,25 +1126,12 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         showImage2 = QtGui.QImage(thresh, thresh.shape[1], thresh.shape[0], thresh.shape[1],
                                   QtGui.QImage.Format_Indexed8)
         self.thresh1_label.setPixmap(QtGui.QPixmap.fromImage(showImage2))
-        # 钢管侧边管口原图
-        showImage3 = QtGui.QImage(imagePipe, imagePipe.shape[1], imagePipe.shape[0], imagePipe.shape[1] * 3,
-                                  QtGui.QImage.Format_RGB888)
-        self.pip_orgin_label.setPixmap(QtGui.QPixmap.fromImage(showImage3))
-        # 钢管侧边管口阈值分割图
-        showImage4 = QtGui.QImage(threshPipe, threshPipe.shape[1], threshPipe.shape[0], threshPipe.shape[1],
-                                  QtGui.QImage.Format_Indexed8)
-        self.thresh_label.setPixmap(QtGui.QPixmap.fromImage(showImage4))
-
-    def beef(self):
-
-        # print('flag', self.flag)
-        if self.flag:
-            winsound.Beep(self.freq, self.duration)
 
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = mainWindow()
+    # win.main()
     win.show()
     sys.exit(app.exec())

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1366</width>
-    <height>768</height>
+    <height>740</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,9 +22,14 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>640</width>
-      <height>480</height>
+      <width>541</width>
+      <height>368</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
@@ -43,10 +48,15 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>481</y>
-      <width>383</width>
-      <height>287</height>
+      <y>372</y>
+      <width>541</width>
+      <height>368</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(197, 228, 255);</string>
@@ -61,11 +71,16 @@
    <widget class="QLabel" name="thresh_label">
     <property name="geometry">
      <rect>
-      <x>920</x>
-      <y>384</y>
-      <width>451</width>
-      <height>383</height>
+      <x>830</x>
+      <y>372</y>
+      <width>541</width>
+      <height>368</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
@@ -83,11 +98,16 @@
    <widget class="QTextEdit" name="textEdit_edit1">
     <property name="geometry">
      <rect>
-      <x>1470</x>
-      <y>-10</y>
+      <x>760</x>
+      <y>550</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -105,11 +125,16 @@
    <widget class="QPushButton" name="surface_set_block_size_btn">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>530</y>
-      <width>141</width>
+      <x>590</x>
+      <y>390</y>
+      <width>171</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>钢管表面自定义阈值分割</string>
@@ -118,11 +143,16 @@
    <widget class="QTextEdit" name="textEdit_edit_angle">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>695</y>
-      <width>61</width>
+      <x>740</x>
+      <y>620</y>
+      <width>81</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -137,11 +167,16 @@
    <widget class="QLineEdit" name="textEdit_thresh1_2">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>630</y>
-      <width>91</width>
+      <x>640</x>
+      <y>550</y>
+      <width>121</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -153,11 +188,16 @@
    <widget class="QPushButton" name="pipe_set_block_size_btn">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>670</y>
-      <width>141</width>
+      <x>570</x>
+      <y>600</y>
+      <width>171</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>钢管侧边自定义阈值分割</string>
@@ -166,11 +206,16 @@
    <widget class="QPushButton" name="set_ksize_btn">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>600</y>
-      <width>91</width>
+      <x>580</x>
+      <y>495</y>
+      <width>121</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>自定义高斯滤波</string>
@@ -179,11 +224,16 @@
    <widget class="QTextEdit" name="textEdit_edit2_3">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>630</y>
+      <x>750</x>
+      <y>580</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -195,11 +245,16 @@
    <widget class="QLabel" name="label_12">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>650</y>
-      <width>61</width>
-      <height>16</height>
+      <x>550</x>
+      <y>580</y>
+      <width>71</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>阈值常数C</string>
@@ -211,11 +266,16 @@
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>490</y>
-      <width>71</width>
-      <height>20</height>
+      <x>550</x>
+      <y>340</y>
+      <width>91</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Block Size</string>
@@ -227,11 +287,16 @@
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>630</y>
-      <width>71</width>
-      <height>20</height>
+      <x>550</x>
+      <y>550</y>
+      <width>81</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Block Size</string>
@@ -243,11 +308,16 @@
    <widget class="QLabel" name="label_10">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>560</y>
-      <width>41</width>
-      <height>20</height>
+      <x>550</x>
+      <y>439</y>
+      <width>61</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>ksize_w</string>
@@ -259,11 +329,16 @@
    <widget class="QTextEdit" name="textEdit_edit3_3">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>650</y>
+      <x>740</x>
+      <y>600</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -275,11 +350,16 @@
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>510</y>
-      <width>61</width>
+      <x>550</x>
+      <y>370</y>
+      <width>71</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>阈值常数C</string>
@@ -291,11 +371,16 @@
    <widget class="QTextEdit" name="textEdit_edit2">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>490</y>
+      <x>770</x>
+      <y>345</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -307,11 +392,16 @@
    <widget class="QLineEdit" name="textEdit_thresh2_2">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>650</y>
-      <width>91</width>
-      <height>21</height>
+      <x>640</x>
+      <y>580</y>
+      <width>111</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -323,15 +413,25 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>700</y>
-      <width>77</width>
+      <x>740</x>
+      <y>490</y>
+      <width>91</width>
       <height>54</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QPushButton" name="orgin_btn">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>打开相机</string>
        </property>
@@ -339,6 +439,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="button_close">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>关闭程序</string>
        </property>
@@ -349,11 +454,16 @@
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>730</y>
-      <width>41</width>
-      <height>16</height>
+      <x>760</x>
+      <y>660</y>
+      <width>51</width>
+      <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>偏转角</string>
@@ -365,11 +475,16 @@
    <widget class="QLineEdit" name="textEdit_thresh1">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>490</y>
-      <width>91</width>
-      <height>21</height>
+      <x>650</x>
+      <y>345</y>
+      <width>121</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -381,11 +496,16 @@
    <widget class="QTextEdit" name="textEdit_edit2_2">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>560</y>
+      <x>740</x>
+      <y>444</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -397,11 +517,16 @@
    <widget class="QTextEdit" name="textEdit_edit3">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>510</y>
+      <x>760</x>
+      <y>370</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -413,11 +538,16 @@
    <widget class="QLineEdit" name="textEdit_thresh3">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>560</y>
-      <width>91</width>
-      <height>21</height>
+      <x>620</x>
+      <y>440</y>
+      <width>121</width>
+      <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -429,11 +559,16 @@
    <widget class="QLineEdit" name="textEdit_thresh2">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>510</y>
-      <width>91</width>
-      <height>21</height>
+      <x>650</x>
+      <y>370</y>
+      <width>111</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -445,11 +580,16 @@
    <widget class="QTextEdit" name="textEdit_edit3_2">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>580</y>
+      <x>740</x>
+      <y>470</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -461,11 +601,16 @@
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>580</y>
-      <width>41</width>
-      <height>20</height>
+      <x>550</x>
+      <y>469</y>
+      <width>61</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>ksize_h</string>
@@ -477,11 +622,16 @@
    <widget class="QLineEdit" name="textEdit_thresh4">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>580</y>
-      <width>91</width>
-      <height>21</height>
+      <x>620</x>
+      <y>470</y>
+      <width>121</width>
+      <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -493,11 +643,16 @@
    <widget class="QLabel" name="pip_orgin_label">
     <property name="geometry">
      <rect>
-      <x>920</x>
+      <x>830</x>
       <y>0</y>
-      <width>451</width>
-      <height>383</height>
+      <width>541</width>
+      <height>368</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
@@ -515,11 +670,16 @@
    <widget class="QPushButton" name="width_set_btn">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>730</y>
-      <width>151</width>
+      <x>560</x>
+      <y>710</y>
+      <width>181</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>自定义钢管宽度（调试用）</string>
@@ -528,11 +688,16 @@
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>690</y>
-      <width>41</width>
-      <height>20</height>
+      <x>550</x>
+      <y>660</y>
+      <width>51</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>最小值</string>
@@ -544,11 +709,16 @@
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>710</y>
-      <width>41</width>
+      <x>550</x>
+      <y>680</y>
+      <width>51</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>最大值</string>
@@ -560,11 +730,16 @@
    <widget class="QLineEdit" name="textEdit_width_max">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>710</y>
-      <width>101</width>
+      <x>610</x>
+      <y>680</y>
+      <width>131</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -576,11 +751,16 @@
    <widget class="QLineEdit" name="textEdit_width_min">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>690</y>
-      <width>101</width>
+      <x>610</x>
+      <y>660</y>
+      <width>131</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -592,11 +772,16 @@
    <widget class="QTextEdit" name="textEdit_edit_width_min">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>690</y>
+      <x>740</x>
+      <y>660</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -608,11 +793,16 @@
    <widget class="QTextEdit" name="textEdit_edit_width_max">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>710</y>
+      <x>740</x>
+      <y>680</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -621,65 +811,22 @@
      <enum>Qt::LeftToRight</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label_xuhao_1">
-    <property name="geometry">
-     <rect>
-      <x>642</x>
-      <y>35</y>
-      <width>91</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>1:长度(6m+1cm)</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_xuhao_2">
     <property name="geometry">
      <rect>
-      <x>642</x>
-      <y>75</y>
+      <x>580</x>
+      <y>42</y>
       <width>41</width>
-      <height>20</height>
+      <height>21</height>
      </rect>
     </property>
-    <property name="text">
-     <string>2:钢印</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_xuhao_3">
-    <property name="geometry">
-     <rect>
-      <x>642</x>
-      <y>120</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
-     <string>3:焊缝(圆管)</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_xuhao_4">
-    <property name="geometry">
-     <rect>
-      <x>642</x>
-      <y>165</y>
-      <width>61</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>4:焊缝饱满</string>
+     <string>钢印</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -688,14 +835,19 @@
    <widget class="QLabel" name="label_xuhao_5">
     <property name="geometry">
      <rect>
-      <x>642</x>
-      <y>210</y>
-      <width>61</width>
-      <height>20</height>
+      <x>570</x>
+      <y>91</y>
+      <width>71</width>
+      <height>21</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>5:方管矩管</string>
+     <string>侧边切口</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -704,30 +856,19 @@
    <widget class="QLabel" name="label_xuhao_6">
     <property name="geometry">
      <rect>
-      <x>642</x>
-      <y>255</y>
-      <width>51</width>
-      <height>20</height>
+      <x>580</x>
+      <y>143</y>
+      <width>41</width>
+      <height>16</height>
      </rect>
     </property>
-    <property name="text">
-     <string>6-1:黑线</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_xuhao_7">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>340</y>
-      <width>61</width>
-      <height>20</height>
-     </rect>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
-     <string>7:压扁试验</string>
+     <string>黑线</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -736,94 +877,19 @@
    <widget class="QLabel" name="label_xuhao_8">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>385</y>
-      <width>61</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>8:几何尺寸</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_xuhao_9">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>455</y>
-      <width>51</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>9:面平整</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_xuhao_10">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>495</y>
-      <width>51</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>10:弯曲度</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_xuhao_11">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>545</y>
-      <width>41</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>11:扭管</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_xuhao_12">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>585</y>
+      <x>570</x>
+      <y>243</y>
       <width>71</width>
-      <height>20</height>
+      <height>16</height>
      </rect>
     </property>
-    <property name="text">
-     <string>12:管头要求</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_xuhao_13">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>630</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
-     <string>13:表面要求</string>
+     <string>几何尺寸</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -832,14 +898,19 @@
    <widget class="QLabel" name="label_xuhao_14">
     <property name="geometry">
      <rect>
-      <x>642</x>
-      <y>300</y>
-      <width>51</width>
-      <height>20</height>
+      <x>580</x>
+      <y>193</y>
+      <width>41</width>
+      <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>6-2:漏焊</string>
+     <string>缺口</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -848,11 +919,16 @@
    <widget class="QLabel" name="label1_1">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>25</y>
-      <width>41</width>
-      <height>30</height>
+      <x>680</x>
+      <y>30</y>
+      <width>20</width>
+      <height>40</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>label1</string>
@@ -861,11 +937,16 @@
    <widget class="QLabel" name="label1_2">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>70</y>
-      <width>41</width>
-      <height>30</height>
+      <x>680</x>
+      <y>80</y>
+      <width>20</width>
+      <height>40</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>label2</string>
@@ -874,180 +955,88 @@
    <widget class="QLabel" name="label1_3">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>115</y>
-      <width>41</width>
-      <height>30</height>
+      <x>680</x>
+      <y>130</y>
+      <width>20</width>
+      <height>40</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>label3</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1_4">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>160</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label4</string>
     </property>
    </widget>
    <widget class="QLabel" name="label1_5">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>205</y>
-      <width>41</width>
-      <height>30</height>
+      <x>680</x>
+      <y>230</y>
+      <width>20</width>
+      <height>40</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>label5</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label1_6_1">
+   <widget class="QLabel" name="label1_4">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>250</y>
-      <width>51</width>
-      <height>30</height>
+      <x>680</x>
+      <y>180</y>
+      <width>20</width>
+      <height>40</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>label6-1</string>
+     <string>label4</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label1_7">
+   <widget class="QLabel" name="label2_1">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>335</y>
-      <width>41</width>
-      <height>30</height>
+      <x>760</x>
+      <y>30</y>
+      <width>20</width>
+      <height>40</height>
      </rect>
     </property>
-    <property name="text">
-     <string>label7</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1_8">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>380</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
-     <string>label8</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1_9">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>450</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label9</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1_10">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>490</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label10</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1_11">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>535</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label11</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1_12">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>580</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label12</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1_13">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>625</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label3</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1_6_2">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>295</y>
-      <width>51</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label6-2</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_9">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>450</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label9</string>
+     <string>label1</string>
     </property>
    </widget>
    <widget class="QLabel" name="label2_2">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>70</y>
-      <width>41</width>
-      <height>30</height>
+      <x>760</x>
+      <y>80</y>
+      <width>20</width>
+      <height>40</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>label2</string>
@@ -1056,349 +1045,70 @@
    <widget class="QLabel" name="label2_5">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>205</y>
-      <width>41</width>
-      <height>30</height>
+      <x>760</x>
+      <y>230</y>
+      <width>21</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>label5</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_1">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>25</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label1</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_8">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>380</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label8</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_4">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>160</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label4</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_7">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>335</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label7</string>
     </property>
    </widget>
    <widget class="QLabel" name="label2_3">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>115</y>
-      <width>41</width>
-      <height>30</height>
+      <x>760</x>
+      <y>130</y>
+      <width>21</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>label3</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label2_11">
+   <widget class="QLabel" name="label2_4">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>535</y>
-      <width>41</width>
-      <height>30</height>
+      <x>760</x>
+      <y>180</y>
+      <width>21</width>
+      <height>41</height>
      </rect>
     </property>
-    <property name="text">
-     <string>label11</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_12">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>580</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label12</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_6_1">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>250</y>
-      <width>51</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label6-1</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_13">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>625</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label3</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_6_2">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>295</y>
-      <width>51</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label6-2</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label2_10">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>490</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label10</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_9">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>450</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label9</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_2">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>70</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label2</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_5">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>205</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label5</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_1">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>25</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label1</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_8">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>380</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label8</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_4">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>160</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>label4</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label3_7">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>335</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label7</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_3">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>115</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label3</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_11">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>535</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label11</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_12">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>580</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label12</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_6_1">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>250</y>
-      <width>51</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label6-1</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_13">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>625</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label3</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_6_2">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>295</y>
-      <width>51</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label6-2</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label3_10">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>490</y>
-      <width>41</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>label10</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_style">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>0</y>
-      <width>51</width>
-      <height>20</height>
+      <x>570</x>
+      <y>10</y>
+      <width>61</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>缺陷类型</string>
@@ -1410,11 +1120,16 @@
    <widget class="QLabel" name="label_num1">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>0</y>
-      <width>31</width>
-      <height>20</height>
+      <x>670</x>
+      <y>10</y>
+      <width>41</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>钢管1</string>
@@ -1426,11 +1141,16 @@
    <widget class="QLabel" name="label_num2">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>0</y>
-      <width>31</width>
-      <height>20</height>
+      <x>750</x>
+      <y>10</y>
+      <width>41</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>钢管2</string>
@@ -1439,30 +1159,19 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_num3">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>0</y>
-      <width>31</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>钢管3</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_xuhao_8_1">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>420</y>
-      <width>51</width>
-      <height>20</height>
+      <x>570</x>
+      <y>283</y>
+      <width>61</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>具体宽度</string>
@@ -1474,11 +1183,16 @@
    <widget class="QTextEdit" name="textEdit_edit_width_1">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>420</y>
-      <width>61</width>
+      <x>660</x>
+      <y>280</y>
+      <width>71</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -1493,30 +1207,16 @@
    <widget class="QTextEdit" name="textEdit_edit_width_2">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>420</y>
-      <width>61</width>
+      <x>740</x>
+      <y>280</y>
+      <width>71</width>
       <height>31</height>
      </rect>
     </property>
-    <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::LeftToRight</enum>
-    </property>
-    <property name="placeholderText">
-     <string>不可编辑</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="textEdit_edit_width_3">
-    <property name="geometry">
-     <rect>
-      <x>840</x>
-      <y>420</y>
-      <width>61</width>
-      <height>31</height>
-     </rect>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -1531,7 +1231,24 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>button_close</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>814</x>
+     <y>534</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>536</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <slot>btn_threshold_demo()</slot>
   <slot>btn_local_threshold()</slot>
